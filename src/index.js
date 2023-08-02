@@ -3,7 +3,7 @@ import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
 import { fetchImages } from './js/pixabayAPI';
 import { createMarkup } from './js/createCards';
-//import { smoothScroll } from './js/setScroll';
+import { smoothScroll } from './js/setScroll';
 
 const formSearchRef = document.querySelector('.search-form');
 const galleryRef = document.querySelector('.gallery');
@@ -118,9 +118,8 @@ function onLoad() {
       } else {
         loadMoreRef.classList.remove('is-hidden');
       }
-      //smoothScroll(galleryRef);
-      //setTimeout(smoothScroll, 0);
-      smoothScroll();
+      smoothScroll(galleryRef);
+      //smoothScroll();
     })
     .catch(err => console.log(err));
 }
@@ -134,12 +133,12 @@ function resetQuery() {
   currentPage = 1;
 }
 
-function smoothScroll() {
-  const { height: cardHeight } =
-    galleryRef.firstElementChild.getBoundingClientRect();
+// function smoothScroll() {
+//   const { height: cardHeight } =
+//     galleryRef.firstElementChild.getBoundingClientRect();
 
-  window.scrollBy({
-    top: cardHeight * 2,
-    behavior: 'smooth',
-  });
-}
+//   window.scrollBy({
+//     top: cardHeight * 2,
+//     behavior: 'smooth',
+//   });
+// }

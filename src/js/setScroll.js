@@ -1,6 +1,6 @@
 export function smoothScroll(galleryRef) {
   const { height: cardHeight } =
-    document.galleryRef.firstElementChild.getBoundingClientRect();
+    galleryRef.firstElementChild.getBoundingClientRect();
 
   window.scrollBy({
     top: cardHeight * 2,
