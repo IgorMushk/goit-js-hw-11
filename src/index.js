@@ -27,7 +27,7 @@ let options = {
 };
 let observer = new IntersectionObserver(onLoad, options);
 
-// loadMoreRef.hidden = true; - Не работает. Нужно через class
+// loadMoreRef.hidden = true; - Не работает. Сделано через class=is-hidden
 
 formSearchRef.addEventListener('submit', onSubmitSearch);
 
@@ -75,7 +75,7 @@ function onSubmitSearch(event) {
     .catch(err => console.log(err));
 }
 
-loadMoreRef.addEventListener('click', onLoad);
+// loadMoreRef.addEventListener('click', onLoad); //
 
 //function onLoad() {
 function onLoad(entries, observer) {
