@@ -3,6 +3,7 @@ import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
 import { fetchImages } from './js/pixabayAPI';
 import { createMarkup } from './js/createCards';
+//import { smoothScroll } from './js/setScroll';
 
 const formSearchRef = document.querySelector('.search-form');
 const galleryRef = document.querySelector('.gallery');
@@ -70,6 +71,7 @@ function onSubmitSearch(event) {
 
       renderGallery(data.hits);
       simpleLightBoxLightbox.refresh();
+      //smoothScroll(galleryRef);
 
       if (data.hits.length === data.totalHits) {
         // 'zaz'
@@ -82,6 +84,7 @@ function onSubmitSearch(event) {
       if (data.hits.length < data.totalHits) {
         loadMoreRef.classList.remove('is-hidden');
       }
+
       //   if (currentPage !== data.totalHits) {
       //     //list.insertAdjacentHTML('beforeend', createMarkup(data.results));
       //     //observer.observe(target); // +
@@ -115,6 +118,9 @@ function onLoad() {
       } else {
         loadMoreRef.classList.remove('is-hidden');
       }
+      //smoothScroll(galleryRef);
+      //setTimeout(smoothScroll, 0);
+      smoothScroll();
     })
     .catch(err => console.log(err));
 }
@@ -126,4 +132,14 @@ function renderGallery(dataArr) {
 function resetQuery() {
   galleryRef.innerHTML = '';
   currentPage = 1;
+}
+
+function smoothScroll() {
+  const { height: cardHeight } =
+    galleryRef.firstElementChild.getBoundingClientRect();
+
+  window.scrollBy({
+    top: cardHeight * 2,
+    behavior: 'smooth',
+  });
 }
