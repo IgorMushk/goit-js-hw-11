@@ -43,8 +43,6 @@ function onSubmitSearch(event) {
 
   fetchImages(searchQuery, currentPage, PER_PAGE)
     .then(data => {
-      //-// console.log('-1-', data.hits.length, data.totalHits);
-
       if (!data.hits.length & !data.totalHits) {
         loadMoreRef.classList.add('is-hidden');
         return Notify.failure(
@@ -62,7 +60,6 @@ function onSubmitSearch(event) {
 
       if (data.hits.length === data.totalHits) {
         // 'zaz'
-        //-// console.log('-2-', data.hits.length, data.totalHits);
         loadMoreRef.classList.add('is-hidden');
         Notify.warning(
           "We're sorry, but you've reached the end of search results."
@@ -87,7 +84,6 @@ function onLoad(entries, observer) {
           renderGallery(data.hits);
           simpleLightBoxLightbox.refresh();
 
-          //-// console.log('-3-', currentPage, data.hits.length, data.totalHits);
           if (currentPage === Math.ceil(data.totalHits / PER_PAGE)) {
             loadMoreRef.classList.add('is-hidden');
             Notify.warning(
