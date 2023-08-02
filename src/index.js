@@ -8,6 +8,8 @@ import { smoothScroll } from './js/setScroll';
 const formSearchRef = document.querySelector('.search-form');
 const galleryRef = document.querySelector('.gallery');
 const loadMoreRef = document.querySelector('.load-more');
+// + for infiniti scroll
+const target = document.querySelector('.js-guard');
 
 const PER_PAGE = 40;
 let currentPage = 1;
@@ -17,6 +19,13 @@ const simpleLightBoxLightbox = new SimpleLightbox('.gallery a', {
   captionsData: 'alt',
   captionDelay: 250,
 });
+
+let options = {
+  root: null,
+  rootMargin: '300px',
+  threshold: 1.0,
+};
+let observer = new IntersectionObserver(onLoad, options);
 
 // loadMoreRef.hidden = true; - Не работает. Нужно через class
 
@@ -49,6 +58,7 @@ function onSubmitSearch(event) {
 
       renderGallery(data.hits);
       simpleLightBoxLightbox.refresh();
+      observer.observe(target); // +
 
       if (data.hits.length === data.totalHits) {
         // 'zaz'
@@ -59,7 +69,7 @@ function onSubmitSearch(event) {
         );
       }
       if (data.hits.length < data.totalHits) {
-        loadMoreRef.classList.remove('is-hidden');
+        //loadMoreRef.classList.remove('is-hidden'); //-
       }
     })
     .catch(err => console.log(err));
@@ -67,25 +77,31 @@ function onSubmitSearch(event) {
 
 loadMoreRef.addEventListener('click', onLoad);
 
-function onLoad() {
-  currentPage += 1;
-  fetchImages(searchQuery, currentPage, PER_PAGE)
-    .then(data => {
-      renderGallery(data.hits);
-      simpleLightBoxLightbox.refresh();
+//function onLoad() {
+function onLoad(entries, observer) {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      currentPage += 1;
+      fetchImages(searchQuery, currentPage, PER_PAGE)
+        .then(data => {
+          renderGallery(data.hits);
+          simpleLightBoxLightbox.refresh();
 
-      //-// console.log('-3-', currentPage, data.hits.length, data.totalHits);
-      if (currentPage === Math.ceil(data.totalHits / PER_PAGE)) {
-        loadMoreRef.classList.add('is-hidden');
-        Notify.warning(
-          "We're sorry, but you've reached the end of search results."
-        );
-      } else {
-        loadMoreRef.classList.remove('is-hidden');
-      }
-      smoothScroll(galleryRef);
-    })
-    .catch(err => console.log(err));
+          //-// console.log('-3-', currentPage, data.hits.length, data.totalHits);
+          if (currentPage === Math.ceil(data.totalHits / PER_PAGE)) {
+            loadMoreRef.classList.add('is-hidden');
+            Notify.warning(
+              "We're sorry, but you've reached the end of search results."
+            );
+            observer.unobserve(target); // +
+          } else {
+            //loadMoreRef.classList.remove('is-hidden'); // -
+          }
+          smoothScroll(galleryRef);
+        })
+        .catch(err => console.log(err));
+    }
+  });
 }
 
 function renderGallery(dataArr) {
