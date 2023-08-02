@@ -4,7 +4,8 @@
   // background-image: radial-gradient(circle farthest-corner at 7.2% 13.6%,
   //         rgba(37, 249, 245, 0.8) 0%,
   //         rgba(8, 70, 218, 1) 90%);
-  background-color: rgba(139, 195, 74, 0.7); //#8bc34a
+  // background-color: rgba(139, 195, 74, 0.7); //#8bc34a
+  background-color: rgb(77, 90, 229, 0.8); // #404bbf;
   position: sticky;
   top: 0;
   z-index: 100;
@@ -15,7 +16,7 @@
   justify-content: center;
 }
 
-.input-button {
+.wrapper-input-button {
   height: 40px;
   width: 500px;
   position: relative;
@@ -38,12 +39,18 @@ input {
   background: #fff;
   cursor: pointer;
   border: none;
+  padding-top: 5px;
+  //top: 50%;
+  //right: 90px;
+  //outline: 2px solid red;
 }
 
 .btn-icon {
   width: 18px;
   height: 18px;
-  fill: #2e2f42;
+  //fill: #8bc34a;
+  fill: #404bbf;
+  //fill: #2e2f42;
   //stroke: #2e2f42;
   border: none;
 }
@@ -51,4 +58,11 @@ input {
 .btn-search:hover,
 .btn-search:focus {
   background: #f0f0f0;
+  //background: #8bc34a;
+  //fill: white;
+  //stroke: red;
+}
+
+.is-hidden {
+  display: none;
 }
