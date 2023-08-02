@@ -8,7 +8,7 @@ export function createMarkup(arr) {
         likes,
         views,
         comments,
-        download,
+        downloads,
       }) => `
       <div class="photo-card">
       <a href="${largeImageURL}">
@@ -24,7 +24,7 @@ export function createMarkup(arr) {
           <b>Comments</b><span>${comments}</span>
         </p>
         <p class="info-item">
-          <b>Downloads</b><span>${download}</span>
+          <b>Downloads</b><span>${downloads}</span>
         </p>
       </div>
       </a>
