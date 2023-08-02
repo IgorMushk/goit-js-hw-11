@@ -8,13 +8,6 @@ import { smoothScroll } from './js/setScroll';
 const formSearchRef = document.querySelector('.search-form');
 const galleryRef = document.querySelector('.gallery');
 const loadMoreRef = document.querySelector('.load-more');
-//console.log(formSearchRef);
-//console.log(galleryRef);
-//console.dir(loadMoreRef);
-
-// Notify.init({
-//   position: 'center-center',
-// });
 
 const PER_PAGE = 40;
 let currentPage = 1;
@@ -33,16 +26,12 @@ fetchImages()
     console.log(error);
   });
 
-// loadMoreRef.hidden = true; - Не работает
+// loadMoreRef.hidden = true; - Не работает. Нужно через class
 
 formSearchRef.addEventListener('submit', onSubmitSearch);
 
 function onSubmitSearch(event) {
   event.preventDefault();
-  //console.dir(event.target);
-  //console.log(event.target.elements.searchQuery.value);
-  //const { searchQuery } = event.target.elements;
-  //console.log(searchQuery.value);
 
   resetQuery();
 
@@ -54,9 +43,8 @@ function onSubmitSearch(event) {
   fetchImages(searchQuery, currentPage, PER_PAGE)
     .then(data => {
       console.log(data);
-      //console.log(data.hits);
 
-      console.log('-1-', data.hits.length, data.totalHits);
+      //-// console.log('-1-', data.hits.length, data.totalHits);
 
       if (!data.hits.length & !data.totalHits) {
         loadMoreRef.classList.add('is-hidden');
@@ -71,11 +59,10 @@ function onSubmitSearch(event) {
 
       renderGallery(data.hits);
       simpleLightBoxLightbox.refresh();
-      //smoothScroll(galleryRef);
 
       if (data.hits.length === data.totalHits) {
         // 'zaz'
-        console.log('-2-', data.hits.length, data.totalHits);
+        //-// console.log('-2-', data.hits.length, data.totalHits);
         loadMoreRef.classList.add('is-hidden');
         Notify.warning(
           "We're sorry, but you've reached the end of search results."
@@ -84,14 +71,6 @@ function onSubmitSearch(event) {
       if (data.hits.length < data.totalHits) {
         loadMoreRef.classList.remove('is-hidden');
       }
-
-      //   if (currentPage !== data.totalHits) {
-      //     //list.insertAdjacentHTML('beforeend', createMarkup(data.results));
-      //     //observer.observe(target); // +
-      //     // Если текущая страница и общее количество страниц не совпадве отоброжаем кнопку
-      //     //loadMoreRef.hidden = false;
-      //     loadMoreRef.classList.remove('is-hidden');
-      //   }
     })
     .catch(err => console.log(err));
 }
@@ -104,12 +83,8 @@ function onLoad() {
     .then(data => {
       renderGallery(data.hits);
       simpleLightBoxLightbox.refresh();
-      //   // Если текущая страница и общее количество страниц совпало, скрываем кнопку
-      //   if (currentPage === data.totalHits) {
-      //     //loadMoreRef.hidden = true;
-      //     loadMoreRef.classList.add('is-hidden');
-      //   }
-      console.log('-3-', currentPage, data.hits.length, data.totalHits);
+
+      //-// console.log('-3-', currentPage, data.hits.length, data.totalHits);
       if (currentPage === Math.ceil(data.totalHits / PER_PAGE)) {
         loadMoreRef.classList.add('is-hidden');
         Notify.warning(
@@ -119,7 +94,6 @@ function onLoad() {
         loadMoreRef.classList.remove('is-hidden');
       }
       smoothScroll(galleryRef);
-      //smoothScroll();
     })
     .catch(err => console.log(err));
 }
@@ -132,13 +106,3 @@ function resetQuery() {
   galleryRef.innerHTML = '';
   currentPage = 1;
 }
-
-// function smoothScroll() {
-//   const { height: cardHeight } =
-//     galleryRef.firstElementChild.getBoundingClientRect();
-
-//   window.scrollBy({
-//     top: cardHeight * 2,
-//     behavior: 'smooth',
-//   });
-// }

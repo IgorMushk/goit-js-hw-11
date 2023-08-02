@@ -1,5 +1,4 @@
 export function createMarkup(arr) {
-  //console.log('arr:', arr);
   return arr
     .map(
       ({
