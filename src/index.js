@@ -18,13 +18,13 @@ const simpleLightBoxLightbox = new SimpleLightbox('.gallery a', {
   captionDelay: 250,
 });
 
-fetchImages()
-  .then(data => {
-    console.log(data);
-  })
-  .catch(error => {
-    console.log(error);
-  });
+// fetchImages()
+//   .then(data => {
+//     console.log('test :', data);
+//   })
+//   .catch(error => {
+//     console.log(error);
+//   });
 
 // loadMoreRef.hidden = true; - Не работает. Нужно через class
 
@@ -42,7 +42,7 @@ function onSubmitSearch(event) {
 
   fetchImages(searchQuery, currentPage, PER_PAGE)
     .then(data => {
-      console.log(data);
+      //console.log(data);
 
       //-// console.log('-1-', data.hits.length, data.totalHits);
 
