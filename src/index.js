@@ -25,7 +25,7 @@ let options = {
   rootMargin: '300px',
   threshold: 1.0,
 };
-//let observer = new IntersectionObserver(onLoadInfinitiScroll, options);
+let observer = new IntersectionObserver(onLoadInfinitiScroll, options);
 
 // loadMoreRef.hidden = true; - Не работает. Сделано через class=is-hidden
 
@@ -56,7 +56,7 @@ function onSubmitSearch(event) {
 
       renderGallery(data.hits);
       simpleLightBoxLightbox.refresh();
-      //observer.observe(target); // +
+      observer.observe(target); // + for infiniti scroll
 
       if (data.hits.length === data.totalHits) {
         // 'zaz'
@@ -66,59 +66,59 @@ function onSubmitSearch(event) {
         );
       }
       if (data.hits.length < data.totalHits) {
-        loadMoreRef.classList.remove('is-hidden'); //-
+        //loadMoreRef.classList.remove('is-hidden'); //- for Btn  loadMore
       }
     })
     .catch(err => console.log(err));
 }
 
-loadMoreRef.addEventListener('click', onLoad); //
-
-function onLoad() {
-  currentPage += 1;
-  fetchImages(searchQuery, currentPage, PER_PAGE)
-    .then(data => {
-      renderGallery(data.hits);
-      simpleLightBoxLightbox.refresh();
-
-      if (currentPage === Math.ceil(data.totalHits / PER_PAGE)) {
-        loadMoreRef.classList.add('is-hidden');
-        Notify.warning(
-          "We're sorry, but you've reached the end of search results."
-        );
-        //observer.unobserve(target); // +
-      } else {
-        loadMoreRef.classList.remove('is-hidden'); // -
-      }
-      smoothScroll(galleryRef);
-    })
-    .catch(err => console.log(err));
-}
-
-// function onLoadInfinitiScroll(entries, observer) {
-//   entries.forEach(entry => {
-//     if (entry.isIntersecting) {
-//       currentPage += 1;
-//       fetchImages(searchQuery, currentPage, PER_PAGE)
-//         .then(data => {
-//           renderGallery(data.hits);
-//           simpleLightBoxLightbox.refresh();
-
-//           if (currentPage === Math.ceil(data.totalHits / PER_PAGE)) {
-//             loadMoreRef.classList.add('is-hidden');
-//             Notify.warning(
-//               "We're sorry, but you've reached the end of search results."
-//             );
-//             observer.unobserve(target); // +
-//           } else {
-//             //loadMoreRef.classList.remove('is-hidden'); // -
-//           }
-//           smoothScroll(galleryRef);
-//         })
-//         .catch(err => console.log(err));
-//     }
-//   });
+// loadMoreRef.addEventListener('click', onLoad); //
+//
+// function onLoad() {
+//   currentPage += 1;
+//   fetchImages(searchQuery, currentPage, PER_PAGE)
+//     .then(data => {
+//       renderGallery(data.hits);
+//       simpleLightBoxLightbox.refresh();
+//
+//       if (currentPage === Math.ceil(data.totalHits / PER_PAGE)) {
+//         loadMoreRef.classList.add('is-hidden');
+//         Notify.warning(
+//           "We're sorry, but you've reached the end of search results."
+//         );
+//         //observer.unobserve(target); // +
+//       } else {
+//         loadMoreRef.classList.remove('is-hidden'); // -
+//       }
+//       smoothScroll(galleryRef);
+//     })
+//     .catch(err => console.log(err));
 // }
+
+function onLoadInfinitiScroll(entries, observer) {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      currentPage += 1;
+      fetchImages(searchQuery, currentPage, PER_PAGE)
+        .then(data => {
+          renderGallery(data.hits);
+          simpleLightBoxLightbox.refresh();
+
+          if (currentPage === Math.ceil(data.totalHits / PER_PAGE)) {
+            loadMoreRef.classList.add('is-hidden');
+            Notify.warning(
+              "We're sorry, but you've reached the end of search results."
+            );
+            observer.unobserve(target); // +
+          } else {
+            //loadMoreRef.classList.remove('is-hidden'); // -
+          }
+          smoothScroll(galleryRef);
+        })
+        .catch(err => console.log(err));
+    }
+  });
+}
 
 function renderGallery(dataArr) {
   galleryRef.insertAdjacentHTML('beforeend', createMarkup(dataArr));
