@@ -27,8 +27,6 @@ const simpleLightBoxLightbox = new SimpleLightbox('.gallery a', {
 // };
 // let observer = new IntersectionObserver(onLoadInfinitiScroll, options);
 
-// loadMoreRef.hidden = true; - Не работает. Сделано через class=is-hidden
-
 formSearchRef.addEventListener('submit', onSubmitSearch);
 
 function onSubmitSearch(event) {
@@ -78,7 +76,6 @@ async function onLoad() {
   currentPage += 1;
   try {
     const data = await fetchImages(searchQuery, currentPage, PER_PAGE);
-    //.then(data => {
     renderGallery(data.hits);
     simpleLightBoxLightbox.refresh();
 
@@ -87,12 +84,10 @@ async function onLoad() {
       Notify.warning(
         "We're sorry, but you've reached the end of search results."
       );
-      //observer.unobserve(target); // +
     } else {
       loadMoreRef.classList.remove('is-hidden'); // -
     }
     smoothScroll(galleryRef);
-    //}).catch(err => console.log(err));
   } catch (err) {
     console.log(err);
   }
