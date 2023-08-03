@@ -74,25 +74,28 @@ function onSubmitSearch(event) {
 
 loadMoreRef.addEventListener('click', onLoad); //
 
-function onLoad() {
+async function onLoad() {
   currentPage += 1;
-  fetchImages(searchQuery, currentPage, PER_PAGE)
-    .then(data => {
-      renderGallery(data.hits);
-      simpleLightBoxLightbox.refresh();
+  try {
+    const data = await fetchImages(searchQuery, currentPage, PER_PAGE);
+    //.then(data => {
+    renderGallery(data.hits);
+    simpleLightBoxLightbox.refresh();
 
-      if (currentPage === Math.ceil(data.totalHits / PER_PAGE)) {
-        loadMoreRef.classList.add('is-hidden');
-        Notify.warning(
-          "We're sorry, but you've reached the end of search results."
-        );
-        //observer.unobserve(target); // +
-      } else {
-        loadMoreRef.classList.remove('is-hidden'); // -
-      }
-      smoothScroll(galleryRef);
-    })
-    .catch(err => console.log(err));
+    if (currentPage === Math.ceil(data.totalHits / PER_PAGE)) {
+      loadMoreRef.classList.add('is-hidden');
+      Notify.warning(
+        "We're sorry, but you've reached the end of search results."
+      );
+      //observer.unobserve(target); // +
+    } else {
+      loadMoreRef.classList.remove('is-hidden'); // -
+    }
+    smoothScroll(galleryRef);
+    //}).catch(err => console.log(err));
+  } catch (err) {
+    console.log(err);
+  }
 }
 
 // function onLoadInfinitiScroll(entries, observer) {
