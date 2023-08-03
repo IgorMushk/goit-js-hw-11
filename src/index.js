@@ -20,12 +20,12 @@ const simpleLightBoxLightbox = new SimpleLightbox('.gallery a', {
   captionDelay: 250,
 });
 
-// let options = {
-//   root: null,
-//   rootMargin: '300px',
-//   threshold: 1.0,
-// };
-// let observer = new IntersectionObserver(onLoad, options);
+let options = {
+  root: null,
+  rootMargin: '300px',
+  threshold: 1.0,
+};
+//let observer = new IntersectionObserver(onLoadInfinitiScroll, options);
 
 // loadMoreRef.hidden = true; - Не работает. Сделано через class=is-hidden
 
@@ -75,9 +75,6 @@ function onSubmitSearch(event) {
 loadMoreRef.addEventListener('click', onLoad); //
 
 function onLoad() {
-  // function onLoad(entries, observer) {
-  //entries.forEach(entry => {
-  // if (entry.isIntersecting) {
   currentPage += 1;
   fetchImages(searchQuery, currentPage, PER_PAGE)
     .then(data => {
@@ -96,9 +93,32 @@ function onLoad() {
       smoothScroll(galleryRef);
     })
     .catch(err => console.log(err));
-  // }
-  //});
 }
+
+// function onLoadInfinitiScroll(entries, observer) {
+//   entries.forEach(entry => {
+//     if (entry.isIntersecting) {
+//       currentPage += 1;
+//       fetchImages(searchQuery, currentPage, PER_PAGE)
+//         .then(data => {
+//           renderGallery(data.hits);
+//           simpleLightBoxLightbox.refresh();
+
+//           if (currentPage === Math.ceil(data.totalHits / PER_PAGE)) {
+//             loadMoreRef.classList.add('is-hidden');
+//             Notify.warning(
+//               "We're sorry, but you've reached the end of search results."
+//             );
+//             observer.unobserve(target); // +
+//           } else {
+//             //loadMoreRef.classList.remove('is-hidden'); // -
+//           }
+//           smoothScroll(galleryRef);
+//         })
+//         .catch(err => console.log(err));
+//     }
+//   });
+// }
 
 function renderGallery(dataArr) {
   galleryRef.insertAdjacentHTML('beforeend', createMarkup(dataArr));
